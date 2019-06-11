@@ -15,10 +15,11 @@
                 console.log("Do something when the dashboard fails loading");
             }
  
+            // https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/
             function embedDashboard() {
                 var containerDiv = document.getElementById("dashboardContainer");
                 var options = {
-                    url: "https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/dashboardId?isauthcode=true&identityprovider=quicksight&code=authcode",
+                    url: "https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/d382c96c-4178-4e27-b810-b6746b5652e9?isauthcode=true&identityprovider=quicksight&code=authcode",
                     container: containerDiv,
                     parameters: {
                         country: "United States"
