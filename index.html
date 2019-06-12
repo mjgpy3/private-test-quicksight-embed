@@ -24,8 +24,8 @@
                     url: embedUrl,
                     container: containerDiv,
                     parameters: {
-                        Start: (year - 1) + '-01-01',
-                        End: (year) + '-01-01'
+                        Start: (year) + '-01-01',
+                        End: (year + 1) + '-01-01'
                     },
                     scrolling: "yes",
                     height: "700px",
@@ -36,19 +36,25 @@
                 dashboard.on("load", onDashboardLoad);
             }
  
-            function onCountryChange(obj) {
-                dashboard.setParameters({country: obj.value});
+            function setDataYear(obj) {
+                var year = parseInt(obj.value);
+                dashboard.setParameters({
+                    Start: (year) + '-01-01',
+                    End: (year + 1) + '-01-01'
+                });
             }
         </script> 
     </head>
  
     <body onload="embedDashboard()">
         <span>
-            <label for="country">Country</label>
-            <select id="country" name="country" onchange="onCountryChange(this)">
-                <option value="United States">United States</option>
-                <option value="Mexico">Mexico</option>
-                <option value="Canada">Canada</option>
+            <label for="year">Year</label>
+            <select id="year" name="year" onchange=setDataYear(this)">
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019" selected="selected">2019</option>
             </select>
         </span>
         <div id="dashboardContainer"></div>
