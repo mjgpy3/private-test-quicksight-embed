@@ -18,8 +18,10 @@
             // https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/
             function embedDashboard() {
                 var containerDiv = document.getElementById("dashboardContainer");
+                var embedUrl = new URLSearchParams(window.location.search).get('embedUrl');
+                console.log('embedUrl', embedUrl);
                 var options = {
-                    url: "https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/d382c96c-4178-4e27-b810-b6746b5652e9?isauthcode=true&identityprovider=quicksight&code=authcode",
+                    url: embedUrl,
                     container: containerDiv,
                     parameters: {
                         country: "United States"
