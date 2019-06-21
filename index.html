@@ -1,6 +1,6 @@
-  <!DOCTYPE html>
-    <html>
- 
+<!DOCTYPE html>
+<html>
+
     <head>
         <title>Basic Embed</title>
         <script src="https://unpkg.com/amazon-quicksight-embedding-sdk@1.0.3/dist/quicksight-embedding-js-sdk.min.js"></script>
@@ -9,26 +9,60 @@
             function onDashboardLoad(payload) {
                 console.log("Do something when the dashboard is fully loaded.");
             }
- 
+
             function onError(payload) {
                 console.log("Do something when the dashboard fails loading");
             }
- 
+
+         function gens(n) {
+            return function() {
+                 var results = [];
+
+                 for (var i = 0; i <= n; i += 1) {
+                     results.push("item " + i);
+                 }
+
+                 return results;
+             };
+         }
+
+         var threeHundred = gens(300);
+         var oneHundred = gens(100);
+         var five = gens(5);
+
+         function id(x) { return x; }
+
+            function withTonOfParameters(originalParameters) {
+                console.log('start gen params', new Date());
+                for (var i = 0; i < 7; i += 1) {
+                    originalParameters['big' + i] = threeHundred();
+                }
+                for (var i = 0; i < 4; i += 1) {
+                    originalParameters['medium' + i] = oneHundred();
+                }
+                for (var i = 0; i < 13; i += 1) {
+                    originalParameters['small' + i] = five();
+                }
+                console.log('end gen params', new Date());
+                return originalParameters;
+            }
+
             // https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/
             function embedDashboard() {
                 var containerDiv = document.getElementById("dashboardContainer");
                 var embedUrl = new URLSearchParams(window.location.search).get('embedUrl');
+                var passTonsOfParameters = Boolean(new URLSearchParams(window.location.search).get('tonsOfParams'));
                 console.log('embedUrl', embedUrl);
                 var year = new Date().getFullYear();
                 var options = {
                     url: embedUrl,
                     container: containerDiv,
-                    parameters: {
+                    parameters: (passTonsOfParameters ? withTonOfParameters : id)({
                         Start: year + '-01-01',
                         End: (year + 1) + '-01-01',
                         CurrentYear: parseInt(year),
                         PriorYear: parseInt(year-1)
-                    },
+                    }),
                     scrolling: "yes",
                     height: '700px'
                 };
@@ -36,19 +70,21 @@
                 dashboard.on("error", onError);
                 dashboard.on("load", onDashboardLoad);
             }
- 
+
             function setDataYear(obj) {
                 var year = parseInt(obj.value);
-                dashboard.setParameters({
+                var passTonsOfParameters = Boolean(new URLSearchParams(window.location.search).get('tonsOfParams'));
+                var f = (passTonsOfParameters ? withTonOfParameters : id);
+                dashboard.setParameters(f({
                     Start: year + '-01-01',
                     End: (year + 1) + '-01-01',
                     CurrentYear: parseInt(year),
                     PriorYear: parseInt(year-1)
-                });
+                }));
             }
-        </script> 
+        </script>
     </head>
- 
+
     <body onload="embedDashboard()">
         <span>
             <label for="year">Year</label>
@@ -62,5 +98,5 @@
         </span>
         <div id="dashboardContainer"></div>
     </body>
- 
-    </html>
+
+</html>
