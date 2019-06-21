@@ -29,7 +29,8 @@
                         CurrentYear: parseInt(year),
                         PriorYear: parseInt(year-1)
                     },
-                    scrolling: "yes"
+                    scrolling: "yes",
+                    height: '700px'
                 };
                 dashboard = QuickSightEmbedding.embedDashboard(options);
                 dashboard.on("error", onError);
