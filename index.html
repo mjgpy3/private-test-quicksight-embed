@@ -24,8 +24,10 @@
                     url: embedUrl,
                     container: containerDiv,
                     parameters: {
-                        Start: (year) + '-01-01',
-                        End: (year + 1) + '-01-01'
+                        Start: year + '-01-01',
+                        End: (year + 1) + '-01-01',
+                        CurrentYear: parseInt(year),
+                        PriorYear: parseInt(year-1)
                     },
                     scrolling: "yes",
                     height: "700px",
@@ -39,8 +41,10 @@
             function setDataYear(obj) {
                 var year = parseInt(obj.value);
                 dashboard.setParameters({
-                    Start: (year) + '-01-01',
-                    End: (year + 1) + '-01-01'
+                    Start: year + '-01-01',
+                    End: (year + 1) + '-01-01',
+                    CurrentYear: parseInt(year),
+                    PriorYear: parseInt(year-1)
                 });
             }
         </script> 
