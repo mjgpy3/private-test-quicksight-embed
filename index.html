@@ -49,38 +49,53 @@
 
             // https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/
             function embedDashboard() {
-                var containerDiv = document.getElementById("dashboardContainer");
+                var containerDiv = document.getElementById("dashboardContainer1");
+                var containerDiv2 = document.getElementById("dashboardContainer2");
                 var embedUrl = new URLSearchParams(window.location.search).get('embedUrl');
                 var passTonsOfParameters = Boolean(new URLSearchParams(window.location.search).get('tonsOfParams'));
                 console.log('embedUrl', embedUrl);
+                var params = (passTonsOfParameters ? withTonOfParameters : id)({
+                    Start: year + '-01-01',
+                    End: (year + 1) + '-01-01',
+                    CurrentYear: parseInt(year),
+                    PriorYear: parseInt(year-1)
+                });
+                console.log('params', JSON.stringify(params));
                 var year = new Date().getFullYear();
                 var options = {
                     url: embedUrl,
                     container: containerDiv,
-                    parameters: (passTonsOfParameters ? withTonOfParameters : id)({
-                        Start: year + '-01-01',
-                        End: (year + 1) + '-01-01',
-                        CurrentYear: parseInt(year),
-                        PriorYear: parseInt(year-1)
-                    }),
+                    parameters: params,
                     scrolling: "yes",
                     height: '700px'
                 };
                 dashboard = QuickSightEmbedding.embedDashboard(options);
                 dashboard.on("error", onError);
                 dashboard.on("load", onDashboardLoad);
+
+                var options2 = {
+                    url: embedUrl,
+                    container: containerDiv2,
+                    parameters: params,
+                    scrolling: "yes",
+                    height: '700px'
+                };
+                dashboard2 = QuickSightEmbedding.embedDashboard(options2);
+                dashboard2.on("error", onError);
+                dashboard2.on("load", onDashboardLoad);
             }
 
             function setDataYear(obj) {
                 var year = parseInt(obj.value);
                 var passTonsOfParameters = Boolean(new URLSearchParams(window.location.search).get('tonsOfParams'));
-                var f = (passTonsOfParameters ? withTonOfParameters : id);
-                dashboard.setParameters(f({
+                var params = (passTonsOfParameters ? withTonOfParameters : id)({
                     Start: year + '-01-01',
                     End: (year + 1) + '-01-01',
                     CurrentYear: parseInt(year),
                     PriorYear: parseInt(year-1)
-                }));
+                });
+                console.log('params', JSON.stringify(params));
+                dashboard.setParameters(params);
             }
         </script>
     </head>
@@ -96,7 +111,8 @@
                 <option value="2019" selected="selected">2019</option>
             </select>
         </span>
-        <div id="dashboardContainer"></div>
+        <div id="dashboardContainer1"></div>
+        <div id="dashboardContainer2"></div>
     </body>
 
 </html>
