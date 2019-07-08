@@ -51,9 +51,9 @@
             function embedDashboard() {
                 var containerDiv = document.getElementById("dashboardContainer1");
                 var containerDiv2 = document.getElementById("dashboardContainer2");
-                var embedUrl = new URLSearchParams(window.location.search).get('embedUrl');
+                var embedUrl1 = new URLSearchParams(window.location.search).get('embedUrl1');
                 var passTonsOfParameters = Boolean(new URLSearchParams(window.location.search).get('tonsOfParams'));
-                console.log('embedUrl', embedUrl);
+                console.log('embedUrl1', embedUrl1);
                 var params = (passTonsOfParameters ? withTonOfParameters : id)({
                     Start: year + '-01-01',
                     End: (year + 1) + '-01-01',
@@ -63,7 +63,7 @@
                 console.log('params', JSON.stringify(params));
                 var year = new Date().getFullYear();
                 var options = {
-                    url: embedUrl,
+                    url: embedUrl1,
                     container: containerDiv,
                     parameters: params,
                     scrolling: "yes",
@@ -73,8 +73,10 @@
                 dashboard.on("error", onError);
                 dashboard.on("load", onDashboardLoad);
 
+                var embedUrl2 = new URLSearchParams(window.location.search).get('embedUrl2');
+
                 var options2 = {
-                    url: embedUrl,
+                    url: embedUrl2,
                     container: containerDiv2,
                     parameters: params,
                     scrolling: "yes",
